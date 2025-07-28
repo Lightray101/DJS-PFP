@@ -6,6 +6,7 @@ import PodcastGrid from "./components/PodcastGrid.jsx";
 import Pagination from "./components/Pagination.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import ErrorMessage from "./components/ErrorMessage.jsx";
+import RecommendedCarousel from "./components/RecommendedCarousel.jsx";
 import { genres } from "./data/genres.js";
 const API_URL = "https://podcast-api.netlify.app/";
 import "./App.css";
@@ -149,11 +150,24 @@ function HomePage() {
     );
   }
 
+  // Prepare recommended shows (first 8 podcasts, with genre tags if available)
+  const recommended = podcasts.slice(0, 8).map(show => ({
+    ...show,
+    genres: show.genres
+      ? show.genres.map(g => {
+          if (typeof g === 'string') return g;
+          if (typeof g === 'object' && g.title) return g.title;
+          const genreObj = genres.find(gg => gg.id === g);
+          return genreObj ? genreObj.title : g;
+        })
+      : []
+  }));
+
   // Main render: search, filters, podcast grid, and pagination
   return (
     <div className="app">
       <Header />
-
+      <RecommendedCarousel shows={recommended} />
       <main className="main-content">
         <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
