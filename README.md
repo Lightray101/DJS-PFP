@@ -18,8 +18,7 @@ PodcastHub is a comprehensive podcast discovery platform that combines intuitive
 - **Progress Tracking** - Automatic saving of listening position every 5 seconds
 - **Resume Functionality** - Pick up where you left off on any episode
 - **Visual Progress** - Real-time progress bar and completion percentage
-- **Smart Controls** - Play, pause, seek, and volume controls
-- **Episode Information** - Current episode title and show details
+-
 
 ### 📊 **Listening Progress System**
 
@@ -123,81 +122,6 @@ npm run build
 npm run preview
 ```
 
-## 🌐 Deployment Guide
-
-### Vercel Deployment (Recommended)
-
-1. **Install Vercel CLI**
-
-   ```bash
-   npm i -g vercel
-   ```
-
-2. **Deploy to Vercel**
-
-   ```bash
-   vercel --prod
-   ```
-
-3. **Custom Domain Setup**
-   - Go to your Vercel dashboard
-   - Select your project
-   - Navigate to Settings → Domains
-   - Add your custom domain
-
-### Manual Deployment
-
-1. **Build the project**
-
-   ```bash
-   npm run build
-   ```
-
-2. **Upload the `dist/` folder** to your hosting provider
-
-3. **Configure SPA routing** - Ensure your server redirects all routes to `index.html`
-
-### Environment Configuration
-
-The app works out of the box with no environment variables required. It uses:
-
-- **API**: `https://podcast-api.netlify.app/` (public API)
-- **Storage**: Browser localStorage
-- **Assets**: Bundled with the application
-
-## 🏗️ Project Architecture
-
-```
-src/
-├── components/              # Reusable UI components
-│   ├── ErrorBoundary.jsx   # Error handling wrapper
-│   ├── FavouriteButton.jsx # Heart button for favorites
-│   ├── Header.jsx          # App header with navigation
-│   ├── LoadingSpinner.jsx  # Loading state component
-│   ├── Modal.jsx           # Modal dialog component
-│   ├── Pagination.jsx      # Page navigation controls
-│   ├── PodcastCard.jsx     # Individual podcast cards
-│   ├── PodcastGrid.jsx     # Grid layout for podcasts
-│   ├── ProgressIndicator.jsx # Episode progress visualization
-│   ├── RecommendedCarousel.jsx # Homepage carousel
-│   ├── Search.jsx          # Search input component
-│   └── Filters.jsx         # Genre and sort controls
-├── contexts/               # React Context providers
-│   ├── AudioPlayerContext.jsx # Global audio state
-│   └── ThemeContext.jsx    # Theme management
-├── hooks/                  # Custom React hooks
-│   ├── useFavourites.js    # Favorites management
-│   └── useListeningProgress.js # Progress tracking
-├── data/                   # Static data files
-│   └── genres.js           # Genre mapping data
-├── utils/                  # Utility functions
-│   └── imageProxy.js       # Image handling utilities
-├── HomePage.jsx            # Main landing page
-├── ShowDetailPage.jsx      # Individual show details
-├── FavouritesPage.jsx      # Favorites management page
-└── App.jsx                 # Root application component
-```
-
 ## 🎨 Key Implementation Details
 
 ### Audio Player System
@@ -255,13 +179,6 @@ src/
 - **✅ Meta Tags** - Rich social media previews
 - **✅ Error Handling** - Production-ready error boundaries
 - **✅ Performance** - Lighthouse-optimized build
-
-## 📊 Bundle Analysis
-
-- **HTML**: 3.15 kB (gzipped: 0.91 kB)
-- **CSS**: 9.76 kB (gzipped: 2.32 kB)
-- **JavaScript**: 211.68 kB (gzipped: 68.99 kB)
-- **Total**: ~225 kB (gzipped: ~72 kB)
 
 ## 📝 API Integration
 
