@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "../contexts/ThemeContext";
 import "./Header.css";
 
 /**
  * Header component displaying the app logo and title
  * @returns {JSX.Element} The header component
  */
-function Header({ onSearchClick, ThemeToggle }) {
+function Header({ onSearchClick }) {
+  const navigate = useNavigate();
   return (
     <header className="header">
       <div className="header__logo">
@@ -22,9 +25,34 @@ function Header({ onSearchClick, ThemeToggle }) {
         </svg>
         <h1 className="header__title">Podcast-App</h1>
       </div>
-      <div className="header__actions" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        {ThemeToggle && <ThemeToggle />}
-        <button className="header__search-btn" aria-label="Search" onClick={onSearchClick}>
+      <div
+        className="header__actions"
+        style={{ display: "flex", alignItems: "center", gap: 8 }}
+      >
+        <ThemeToggle />
+        <button
+          aria-label="Favourites"
+          onClick={() => navigate("/favourites")}
+          style={{
+            background: "none",
+            border: "none",
+            fontSize: 26,
+            color: "#e74c3c",
+            cursor: "pointer",
+            marginRight: 4,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <span role="img" aria-label="Favourites">
+            ♥
+          </span>
+        </button>
+        <button
+          className="header__search-btn"
+          aria-label="Search"
+          onClick={onSearchClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"

@@ -11,6 +11,8 @@ import { genres } from "./data/genres.js";
 const API_URL = "https://podcast-api.netlify.app/";
 import "./App.css";
 
+// Theme toggle will be provided by App.jsx
+
 // HomePage is the main component for displaying and managing the podcast list UI
 function HomePage() {
   // State variables for podcasts, UI, and filters
@@ -24,6 +26,10 @@ function HomePage() {
   const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
   const [showSearch, setShowSearch] = useState(false); // Show/hide search overlay
   const ITEMS_PER_PAGE = 12; // Number of podcasts per page
+
+  const handleSearchClick = () => {
+    setShowSearch(true);
+  };
 
   // Fetch podcasts from the API when the component mounts
   useEffect(() => {
@@ -152,59 +158,98 @@ function HomePage() {
   }
 
   // Prepare recommended shows (first 8 podcasts, with genre tags if available)
-  const recommended = podcasts.slice(0, 8).map(show => ({
+  const recommended = podcasts.slice(0, 8).map((show) => ({
     ...show,
     genres: show.genres
-      ? show.genres.map(g => {
-          if (typeof g === 'string') return g;
-          if (typeof g === 'object' && g.title) return g.title;
-          const genreObj = genres.find(gg => gg.id === g);
+      ? show.genres.map((g) => {
+          if (typeof g === "string") return g;
+          if (typeof g === "object" && g.title) return g.title;
+          const genreObj = genres.find((gg) => gg.id === g);
           return genreObj ? genreObj.title : g;
         })
-      : []
+      : [],
   }));
 
   // Main render: search, filters, podcast grid, and pagination
   return (
     <div className="app">
+      <Header onSearchClick={handleSearchClick} />
       <RecommendedCarousel shows={recommended} />
       {showSearch && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          background: 'rgba(255,255,255,0.98)',
-          zIndex: 3000,
-          padding: '16px 0 8px 0',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <div style={{
-            background: '#fff',
-            borderRadius: 12,
-            boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            minWidth: 0,
-          }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            background: "rgba(255,255,255,0.98)",
+            zIndex: 3000,
+            padding: "16px 0 8px 0",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              minWidth: 0,
+            }}
+          >
             <input
               type="text"
               autoFocus
               placeholder="Search podcasts..."
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              style={{ fontSize: 18, padding: '8px 16px', borderRadius: 8, border: '1px solid #ccc', width: 260, maxWidth: '70vw' }}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                fontSize: 18,
+                padding: "8px 16px",
+                borderRadius: 8,
+                border: "1px solid #ccc",
+                width: 260,
+                maxWidth: "70vw",
+              }}
             />
-            <button onClick={() => setShowSearch(false)} style={{ marginLeft: 10, fontSize: 24, background: 'none', border: 'none', cursor: 'pointer' }} aria-label="Close search">✕</button>
+            <button
+              onClick={() => setShowSearch(false)}
+              style={{
+                marginLeft: 10,
+                fontSize: 24,
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+              aria-label="Close search"
+            >
+              ✕
+            </button>
           </div>
         </div>
       )}
-      <main className="main-content" style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
+      <main
+        className="main-content"
+        style={{
+          width: "100%",
+          maxWidth: 1400,
+          margin: "0 auto",
+          padding: "0 24px",
+        }}
+      >
         {/* Filters and sort in a row at the top */}
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center', marginBottom: 32 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 24,
+            alignItems: "center",
+            marginBottom: 32,
+          }}
+        >
           <Filters
             genres={genres}
             selectedGenre={selectedGenre}

@@ -8,25 +8,22 @@
   padding: 0 16px;
 }
 
-.podcast-card,
-.episode-card {
+.podcast-card {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   transition: box-shadow 0.2s, transform 0.2s;
   overflow: hidden;
   position: relative;
 }
 
-.podcast-card:hover,
-.episode-card:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
+.podcast-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
   transform: translateY(-4px) scale(1.03);
   z-index: 2;
 }
 
-.podcast-card img,
-.episode-card img {
+.podcast-card img {
   width: 100%;
   height: auto;
   display: block;
@@ -40,11 +37,29 @@
   margin: 8px 0;
 }
 
+/* Improved genre tag styles */
 .genre-tag {
-  background: #f0f0f0;
-  color: #333;
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: 12px;
-  white-space: nowrap;
+  background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+  color: #222;
+  border-radius: 16px;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 6px 2px 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  display: inline-block;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, color 0.2s;
+}
+.genre-tag:hover {
+  background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+  color: #181818;
+}
+body.dark .genre-tag {
+  background: linear-gradient(90deg, #444 0%, #232323 100%);
+  color: #ffcc33;
+}
+body.dark .genre-tag:hover {
+  background: linear-gradient(90deg, #232323 0%, #444 100%);
+  color: #fffbe6;
 }

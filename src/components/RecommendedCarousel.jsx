@@ -15,13 +15,13 @@ export default function RecommendedCarousel({ shows }) {
 
   return (
     <div
+      className="recommended-carousel"
       style={{
         position: 'relative',
         width: '100vw',
         left: 0,
         right: 0,
         margin: 0,
-        background: '#f5f5f5',
         padding: '2rem 0 2rem 0',
         boxSizing: 'border-box',
         zIndex: 1,
