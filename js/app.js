@@ -238,26 +238,29 @@ function useFavourites() {
     localStorage.setItem('favouriteEpisodes', JSON.stringify(favourites));
   }, [favourites]);
 
-  const addFavourite = (episodeId) => {
-    if (!favourites.includes(episodeId)) {
-      setFavourites([...favourites, episodeId]);
+  // Add favourite with metadata: episodeId, showId, showTitle, season, dateAdded
+  const addFavourite = (favObj) => {
+    if (!favourites.some(f => f.episodeId === favObj.episodeId)) {
+      setFavourites([...favourites, { ...favObj, dateAdded: new Date().toISOString() }]);
     }
   };
   const removeFavourite = (episodeId) => {
-    setFavourites(favourites.filter(id => id !== episodeId));
+    setFavourites(favourites.filter(f => f.episodeId !== episodeId));
   };
-  const isFavourite = (episodeId) => favourites.includes(episodeId);
+  const isFavourite = (episodeId) => favourites.some(f => f.episodeId === episodeId);
 
   return { favourites, addFavourite, removeFavourite, isFavourite };
 }
 
 // Favourite button component
-function FavouriteButton({ episodeId }) {
+function FavouriteButton({ episodeId, showId, showTitle, season }) {
   const { isFavourite, addFavourite, removeFavourite } = useFavourites();
   const fav = isFavourite(episodeId);
   return (
     <button
-      onClick={() => fav ? removeFavourite(episodeId) : addFavourite(episodeId)}
+      onClick={() => fav
+        ? removeFavourite(episodeId)
+        : addFavourite({ episodeId, showId, showTitle, season })}
       style={{
         background: 'none',
         border: 'none',
