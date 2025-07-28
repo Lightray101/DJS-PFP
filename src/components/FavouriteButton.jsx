@@ -1,29 +1,46 @@
 import React from "react";
 import { useFavourites } from "../hooks/useFavourites";
 
-export function FavouriteButton({ episodeId, showId, showTitle, season, style }) {
+export function FavouriteButton({
+  episodeId,
+  showId,
+  showTitle,
+  season,
+  episodeTitle,
+  description,
+  style,
+}) {
   const { isFavourite, addFavourite, removeFavourite } = useFavourites();
   const fav = isFavourite(episodeId);
   return (
     <button
-      onClick={e => {
+      onClick={(e) => {
         e.preventDefault(); // Prevent card navigation when clicking heart
-        fav ? removeFavourite(episodeId) : addFavourite({ episodeId, showId, showTitle, season });
+        fav
+          ? removeFavourite(episodeId)
+          : addFavourite({
+              episodeId,
+              showId,
+              showTitle,
+              season,
+              episodeTitle,
+              description,
+            });
       }}
       style={{
-        background: 'none',
-        border: 'none',
-        color: fav ? 'red' : '#d1d1d1',
+        background: "none",
+        border: "none",
+        color: fav ? "red" : "#d1d1d1",
         fontSize: 28,
-        cursor: 'pointer',
+        cursor: "pointer",
         marginRight: 0,
-        outline: 'none',
-        ...style
+        outline: "none",
+        ...style,
       }}
-      aria-label={fav ? 'Unfavourite' : 'Favourite'}
-      title={fav ? 'Unfavourite' : 'Favourite'}
+      aria-label={fav ? "Unfavourite" : "Favourite"}
+      title={fav ? "Unfavourite" : "Favourite"}
     >
-      {fav ? '♥' : '♡'}
+      {fav ? "♥" : "♡"}
     </button>
   );
 }

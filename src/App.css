@@ -80,7 +80,7 @@ body.dark .episode-card img {
 }
 body.dark .genre-tag {
   background: #333;
-  color: #f5f5f5;
+  color: #f3f3f3;
 }
 
 /* Form elements */
@@ -146,16 +146,16 @@ body.dark ::-webkit-scrollbar-thumb:hover {
 
 /* Carousel styles */
 .recommended-carousel {
-  background: #f8f9fa;
+  background: #f3ecec;
   transition: background 0.3s ease;
 }
 body.dark .recommended-carousel {
-  background: #232323;
+  background: #000000;
 }
 
 body.dark .recommended-carousel a {
   background: #2a2a2a !important;
-  color: #f5f5f5 !important;
+  color: #e91313 !important;
   border-color: #444 !important;
 }
 
