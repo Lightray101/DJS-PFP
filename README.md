@@ -2,10 +2,6 @@
 
 A modern, feature-rich React application for discovering, listening to, and managing your favorite podcasts. Built with cutting-edge web technologies and designed for an exceptional user experience.
 
-## 🚀 Live Demo
-
-**🌐 Deployed Application**: [https://podcasthub.vercel.app](https://podcasthub.vercel.app)
-
 ## 🎯 Project Overview
 
 PodcastHub is a comprehensive podcast discovery platform that combines intuitive browsing with powerful audio playback capabilities. Users can explore podcasts, track listening progress, manage favorites, and enjoy a seamless audio experience across all devices.

@@ -9,6 +9,8 @@ import ErrorMessage from "./components/ErrorMessage.jsx";
 import RecommendedCarousel from "./components/RecommendedCarousel.jsx";
 import { genres } from "./data/genres.js";
 const API_URL = "https://podcast-api.netlify.app/";
+import "./HomePage.css";
+
 import "./App.css";
 
 // Theme toggle will be provided by App.jsx
@@ -176,55 +178,17 @@ function HomePage() {
       <Header onSearchClick={handleSearchClick} />
       <RecommendedCarousel shows={recommended} />
       {showSearch && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            background: "rgba(255,255,255,0.98)",
-            zIndex: 3000,
-            padding: "16px 0 8px 0",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
-              padding: "12px 16px",
-              display: "flex",
-              alignItems: "center",
-              minWidth: 0,
-            }}
-          >
+        <div className="search-overlay">
+          <div className="search-box">
             <input
               type="text"
               autoFocus
               placeholder="Search podcasts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                fontSize: 18,
-                padding: "8px 16px",
-                borderRadius: 8,
-                border: "1px solid #ccc",
-                width: 260,
-                maxWidth: "70vw",
-              }}
             />
             <button
               onClick={() => setShowSearch(false)}
-              style={{
-                marginLeft: 10,
-                fontSize: 24,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
               aria-label="Close search"
             >
               ✕
@@ -242,14 +206,7 @@ function HomePage() {
         }}
       >
         {/* Filters and sort in a row at the top */}
-        <div
-          style={{
-            display: "flex",
-            gap: 24,
-            alignItems: "center",
-            marginBottom: 32,
-          }}
-        >
+        <div className="filters-wrapper">
           <Filters
             genres={genres}
             selectedGenre={selectedGenre}
