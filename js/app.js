@@ -226,6 +226,53 @@ class PodcastApp {
 /**
  * Main App component with routing
  */
+// Custom hook for managing favourites in localStorage
+function useFavourites() {
+  const [favourites, setFavourites] = React.useState(() => {
+    const favs = localStorage.getItem('favouriteEpisodes');
+    return favs ? JSON.parse(favs) : [];
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('favouriteEpisodes', JSON.stringify(favourites));
+  }, [favourites]);
+
+  const addFavourite = (episodeId) => {
+    if (!favourites.includes(episodeId)) {
+      setFavourites([...favourites, episodeId]);
+    }
+  };
+  const removeFavourite = (episodeId) => {
+    setFavourites(favourites.filter(id => id !== episodeId));
+  };
+  const isFavourite = (episodeId) => favourites.includes(episodeId);
+
+  return { favourites, addFavourite, removeFavourite, isFavourite };
+}
+
+// Favourite button component
+function FavouriteButton({ episodeId }) {
+  const { isFavourite, addFavourite, removeFavourite } = useFavourites();
+  const fav = isFavourite(episodeId);
+  return (
+    <button
+      onClick={() => fav ? removeFavourite(episodeId) : addFavourite(episodeId)}
+      style={{
+        background: 'none',
+        border: 'none',
+        color: fav ? 'red' : '#fff',
+        fontSize: 24,
+        cursor: 'pointer',
+        marginRight: 16
+      }}
+      aria-label={fav ? 'Unfavourite' : 'Favourite'}
+      title={fav ? 'Unfavourite' : 'Favourite'}
+    >
+      {fav ? '♥' : '♡'}
+    </button>
+  );
+}
+
 // Simple global audio player component
 function AudioPlayer() {
   const [playing, setPlaying] = React.useState(false);
@@ -241,8 +288,9 @@ function AudioPlayer() {
     setPlaying(!playing);
   };
 
-  // Example placeholder audio
+  // Example placeholder audio and episode ID
   const audioSrc = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+  const episodeId = "example-episode-1";
 
   return (
     <div style={{
@@ -260,6 +308,7 @@ function AudioPlayer() {
       <button onClick={togglePlay} style={{marginRight: 16}}>
         {playing ? 'Pause' : 'Play'}
       </button>
+      <FavouriteButton episodeId={episodeId} />
       <audio ref={audioRef} src={audioSrc} onEnded={() => setPlaying(false)} style={{display: 'none'}} />
       <span>Now Playing: Example Audio</span>
     </div>
