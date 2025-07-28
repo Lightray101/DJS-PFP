@@ -226,14 +226,57 @@ class PodcastApp {
 /**
  * Main App component with routing
  */
+// Simple global audio player component
+function AudioPlayer() {
+  const [playing, setPlaying] = React.useState(false);
+  const audioRef = React.useRef(null);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setPlaying(!playing);
+  };
+
+  // Example placeholder audio
+  const audioSrc = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+
+  return (
+    <div style={{
+      position: 'fixed',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: '#222',
+      color: '#fff',
+      padding: '12px 24px',
+      display: 'flex',
+      alignItems: 'center',
+      zIndex: 1000
+    }}>
+      <button onClick={togglePlay} style={{marginRight: 16}}>
+        {playing ? 'Pause' : 'Play'}
+      </button>
+      <audio ref={audioRef} src={audioSrc} onEnded={() => setPlaying(false)} style={{display: 'none'}} />
+      <span>Now Playing: Example Audio</span>
+    </div>
+  );
+}
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/show/:id" element={<ShowDetailPage />} />
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/show/:id" element={<ShowDetailPage />} />
+        </Routes>
+      </Router>
+      <AudioPlayer />
+    </>
   );
 }
 
