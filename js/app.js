@@ -315,9 +315,58 @@ function AudioPlayer() {
   );
 }
 
+// Theme context and provider
+const ThemeContext = React.createContext();
+
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = React.useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = React.useContext(ThemeContext);
+  return (
+    <button
+      onClick={toggleTheme}
+      style={{
+        position: 'fixed',
+        top: 16,
+        right: 16,
+        zIndex: 2000,
+        background: 'none',
+        border: 'none',
+        fontSize: 28,
+        cursor: 'pointer',
+        color: theme === 'dark' ? '#ffd700' : '#222',
+        transition: 'color 0.2s'
+      }}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      {theme === 'dark' ? '🌙' : '☀️'}
+    </button>
+  );
+}
+
 function App() {
   return (
-    <>
+    <ThemeProvider>
+      <ThemeToggle />
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -325,7 +374,7 @@ function App() {
         </Routes>
       </Router>
       <AudioPlayer />
-    </>
+    </ThemeProvider>
   );
 }
 
