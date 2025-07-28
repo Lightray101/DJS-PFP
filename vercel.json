@@ -1,4 +1,4 @@
-{
+{{
   "version": 2,
   "builds": [
     {
@@ -49,10 +49,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "src/main.jsx": {
-      "includeFiles": "dist/**"
-    }
-  }
+  ]
 }

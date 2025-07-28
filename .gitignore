@@ -104,3 +104,4 @@ temp/
 # (This is optional and generally not recommended)
 # node_modules/**/README*
 # node_modules/**/README.md 
+.vercel
