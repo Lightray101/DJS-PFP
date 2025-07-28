@@ -68,7 +68,7 @@ function PodcastGrid({ podcasts, genres }) {
                   );
                 })}
             </div>
-            <div className="podcast-meta">
+            <div className="podcast-meta" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <span>
                 <strong>Last updated:</strong>{" "}
                 {podcast.updated

@@ -22,6 +22,7 @@ function HomePage() {
   const [selectedGenre, setSelectedGenre] = useState("all"); // Selected genre filter
   const [sortBy, setSortBy] = useState("updated-desc"); // Sorting option
   const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
+  const [showSearch, setShowSearch] = useState(false); // Show/hide search overlay
   const ITEMS_PER_PAGE = 12; // Number of podcasts per page
 
   // Fetch podcasts from the API when the component mounts
@@ -166,12 +167,45 @@ function HomePage() {
   // Main render: search, filters, podcast grid, and pagination
   return (
     <div className="app">
-      <Header />
+      <Header onSearchClick={() => setShowSearch(true)} />
       <RecommendedCarousel shows={recommended} />
-      <main className="main-content">
-        <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-
-        <div className="filters-center">
+      {showSearch && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          background: 'rgba(255,255,255,0.98)',
+          zIndex: 3000,
+          padding: '16px 0 8px 0',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <div style={{
+            background: '#fff',
+            borderRadius: 12,
+            boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+            padding: '12px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            minWidth: 0,
+          }}>
+            <input
+              type="text"
+              autoFocus
+              placeholder="Search podcasts..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              style={{ fontSize: 18, padding: '8px 16px', borderRadius: 8, border: '1px solid #ccc', width: 260, maxWidth: '70vw' }}
+            />
+            <button onClick={() => setShowSearch(false)} style={{ marginLeft: 10, fontSize: 24, background: 'none', border: 'none', cursor: 'pointer' }} aria-label="Close search">✕</button>
+          </div>
+        </div>
+      )}
+      <main className="main-content" style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
+        {/* Filters and sort in a row at the top */}
+        <div style={{ display: 'flex', gap: 24, alignItems: 'center', marginBottom: 32 }}>
           <Filters
             genres={genres}
             selectedGenre={selectedGenre}
@@ -180,19 +214,19 @@ function HomePage() {
             onSortChange={setSortBy}
           />
         </div>
-
         {filteredPodcasts.length === 0 ? (
           <ErrorMessage message="No podcasts found with the selected filters." />
         ) : (
           <>
             <PodcastGrid podcasts={paginatedPodcasts} genres={genres} />
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={handlePageChange}
-            />
+            <div style={{ marginBottom: 40 }}>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={handlePageChange}
+              />
+            </div>
           </>
         )}
       </main>
