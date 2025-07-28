@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import ShowDetailPage from "./ShowDetailPage";
+import FavouritesPage from "./FavouritesPage";
 
 /**
  * Main class to manage the Podcast Application using Web Components
@@ -368,9 +369,14 @@ function App() {
     <ThemeProvider>
       <ThemeToggle />
       <Router>
+        <nav style={{ position: 'fixed', top: 16, left: 16, zIndex: 2000 }}>
+          <a href="/" style={{ marginRight: 16, color: '#222', textDecoration: 'none', fontWeight: 600 }}>Home</a>
+          <a href="/favourites" style={{ color: '#222', textDecoration: 'none', fontWeight: 600 }}>Favourites</a>
+        </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/show/:id" element={<ShowDetailPage />} />
+          <Route path="/favourites" element={<FavouritesPage />} />
         </Routes>
       </Router>
       <AudioPlayer />
