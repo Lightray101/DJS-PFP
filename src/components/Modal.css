@@ -306,3 +306,33 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+@media (max-width: 600px) {
+  .scroll-container {
+    flex-wrap: nowrap; /* Keep items in one row */
+    overflow-x: auto; /* Enable horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  .scroll-container .item {
+    min-width: 200px; /* or whatever width fits your design */
+    flex: 0 0 auto; /* Prevent items from shrinking */
+  }
+}
+/* Scroll container and items on mobile */
+.episodes-scroll-container ul {
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  scroll-behavior: smooth; /* smooth scrolling on modern browsers */
+}
+
+/* On screens wider than 600px, reset scrolling and wrapping */
+@media (min-width: 601px) {
+  .episodes-scroll-container ul {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+  .episodes-scroll-container ul li {
+    min-width: auto !important;
+    max-width: none !important;
+    flex: 1 1 auto !important;
+  }
+}

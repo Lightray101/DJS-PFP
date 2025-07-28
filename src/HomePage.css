@@ -75,3 +75,15 @@
     padding: 0 12px;
   }
 }
+@media (max-width: 600px) {
+  .scroll-container {
+    flex-wrap: nowrap; /* Keep items in one row */
+    overflow-x: auto; /* Enable horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  .scroll-container .item {
+    min-width: 200px; /* or whatever width fits your design */
+    flex: 0 0 auto; /* Prevent items from shrinking */
+  }
+}

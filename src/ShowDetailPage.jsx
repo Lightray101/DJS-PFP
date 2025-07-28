@@ -4,9 +4,6 @@ import { useAudioPlayer } from "./contexts/AudioPlayerContext";
 import { FavouriteButton } from "./components/FavouriteButton";
 import ProgressIndicator from "./components/ProgressIndicator";
 
-/**
- * Maps genre IDs to their titles.
- */
 const GENRE_MAP = {
   1: "Personal Growth",
   2: "Investigative Journalism",
@@ -19,11 +16,6 @@ const GENRE_MAP = {
   9: "Kids and Family",
 };
 
-/**
- * Formats a date string into a human-readable format (e.g., "2 days ago").
- * @param {string} dateString - The ISO date string.
- * @returns {string} The formatted, human-readable date.
- */
 function formatDate(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -42,11 +34,6 @@ function formatDate(dateString) {
   return Math.floor(seconds) + " seconds ago";
 }
 
-/**
- * Show detail page component.
- * Fetches and displays details for a single show.
- * @returns {JSX.Element}
- */
 function ShowDetailPage() {
   const { id } = useParams();
   const [show, setShow] = useState(null);
@@ -77,19 +64,16 @@ function ShowDetailPage() {
   if (error) return <div>Error: {error}</div>;
   if (!show) return <div>Show not found.</div>;
 
-  // Helper to shorten episode descriptions
   function shorten(text, max = 120) {
     if (!text) return "";
     return text.length > max ? text.slice(0, max) + "..." : text;
   }
 
-  // Handle playing an episode
   const handlePlayEpisode = (episode, episodeIndex) => {
     const episodeId = `${show.id}-s${selectedSeason}-e${episodeIndex}`;
     const seasonTitle =
       show.seasons[selectedSeason]?.title || `Season ${selectedSeason + 1}`;
 
-    // Use placeholder audio URL for demonstration
     const audioSrc =
       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
@@ -102,84 +86,88 @@ function ShowDetailPage() {
     });
   };
 
-  // Check if an episode is currently playing
   const isEpisodePlaying = (episodeIndex) => {
     const episodeId = `${show.id}-s${selectedSeason}-e${episodeIndex}`;
     return currentEpisode?.episodeId === episodeId && playing;
   };
 
   return (
-    <div>
-      <div style={{ margin: "24px 0 16px 0" }}>
-        <Link to={backUrl} style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              background: "linear-gradient(90deg, #232323 60%, #444 100%)",
-              color: "#fff",
-              border: "none",
-              borderRadius: 8,
-              padding: "10px 26px",
-              fontSize: 18,
-              cursor: "pointer",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
-              marginBottom: 8,
-              fontWeight: 600,
-              letterSpacing: 0.5,
-              transition: "background 0.2s, color 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "#333")}
-            onMouseOut={(e) =>
-              (e.currentTarget.style.background =
-                "linear-gradient(90deg, #232323 60%, #444 100%)")
-            }
-          >
-            ← Back to Homepage
-          </button>
-        </Link>
-      </div>
-      <h1>{show.title}</h1>
-      <div
-        className="show-flex-row"
-        style={{
-          display: "flex",
-          gap: "2rem",
-          alignItems: "flex-start",
-          margin: "2rem 0",
-        }}
-      >
-        <img
-          src={show.image}
-          alt={show.title}
-          style={{ width: "300px", borderRadius: "8px", flexShrink: 0 }}
-        />
-        <div className="show-details">
-          <p>{show.description}</p>
-          <div>
-            {show.genres &&
-              show.genres.map((id) => (
-                <span
-                  key={id}
-                  style={{
-                    display: "inline-block",
-                    background: "#eee",
-                    borderRadius: "4px",
-                    padding: "0.2rem 0.6rem",
-                    marginRight: "0.5rem",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {GENRE_MAP[id] || "Unknown"}
-                </span>
-              ))}
+    <div style={{ padding: "0 1rem" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+        <div style={{ margin: "24px 0 16px 0" }}>
+          <Link to={backUrl} style={{ textDecoration: "none" }}>
+            <button
+              style={{
+                background: "linear-gradient(90deg, #232323 60%, #444 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
+                padding: "10px 26px",
+                fontSize: 18,
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                marginBottom: 8,
+                fontWeight: 600,
+                letterSpacing: 0.5,
+                transition: "background 0.2s, color 0.2s",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.background = "#333")}
+              onMouseOut={(e) =>
+                (e.currentTarget.style.background =
+                  "linear-gradient(90deg, #232323 60%, #444 100%)")
+              }
+            >
+              ← Back to Homepage
+            </button>
+          </Link>
+        </div>
+        <h1>{show.title}</h1>
+        <div
+          className="show-flex-row"
+          style={{
+            display: "flex",
+            gap: "2rem",
+            alignItems: "flex-start",
+            margin: "2rem 0",
+            overflowX: "auto",
+            paddingBottom: "1rem",
+            maxWidth: "100%",
+          }}
+        >
+          <img
+            src={show.image}
+            alt={show.title}
+            style={{ width: "300px", borderRadius: "8px", flexShrink: 0 }}
+          />
+          <div className="show-details" style={{ minWidth: "300px" }}>
+            <p style={{ whiteSpace: "normal" }}>{show.description}</p>
+            <div>
+              {show.genres &&
+                show.genres.map((id) => (
+                  <span
+                    key={id}
+                    style={{
+                      display: "inline-block",
+                      background: "#eee",
+                      borderRadius: "4px",
+                      padding: "0.2rem 0.6rem",
+                      marginRight: "0.5rem",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {GENRE_MAP[id] || "Unknown"}
+                  </span>
+                ))}
+            </div>
+            <p>
+              <strong>Last updated:</strong> {formatDate(show.updated)}
+            </p>
           </div>
-          <p>
-            <strong>Last updated:</strong> {formatDate(show.updated)}
-          </p>
         </div>
       </div>
 
       {/* Season Navigation */}
-      <div style={{ marginTop: "2rem" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto", marginTop: "2rem" }}>
         <h2>Seasons</h2>
         {show.seasons && show.seasons.length > 0 ? (
           <div style={{ marginBottom: 24 }}>
