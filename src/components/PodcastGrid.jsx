@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { FavouriteButton } from "./FavouriteButton";
 import "./PodcastGrid.css";
 
 /**
@@ -29,36 +30,57 @@ function PodcastGrid({ podcasts, genres }) {
   return (
     <div className="podcast-grid">
       {podcasts.map((podcast) => (
-        <Link
-          key={podcast.id}
-          to={`/show/${podcast.id}${queryString}`}
-          className="podcast-card"
-        >
-          <img src={podcast.image} alt={podcast.title} />
-          <h2>{podcast.title}</h2>
-          <div className="podcast-genres">
-            {podcast.genres &&
-              podcast.genres.map((id) => {
-                const genre = genres.find((g) => g.id === id);
-                return (
-                  <span className="genre-tag" key={id}>
-                    {genre ? genre.title : "Unknown"}
-                  </span>
-                );
-              })}
-          </div>
-          <div className="podcast-meta">
-            <span>
-              <strong>Last updated:</strong>{" "}
-              {podcast.updated
-                ? new Date(podcast.updated).toLocaleDateString()
-                : "Unknown"}
-            </span>
-            <span>
-              <strong>Seasons:</strong> {podcast.seasons || 0}
-            </span>
-          </div>
-        </Link>
+        <div key={podcast.id} className="podcast-card" style={{ position: 'relative' }}>
+          <FavouriteButton
+            episodeId={podcast.id}
+            showId={podcast.id}
+            showTitle={podcast.title}
+            // No season info at this level
+            style={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              zIndex: 2,
+              background: 'rgba(255,255,255,0.85)',
+              borderRadius: '50%',
+              width: 40,
+              height: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
+            }}
+          />
+          <Link
+            to={`/show/${podcast.id}${queryString}`}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <img src={podcast.image} alt={podcast.title} />
+            <h2>{podcast.title}</h2>
+            <div className="podcast-genres">
+              {podcast.genres &&
+                podcast.genres.map((id) => {
+                  const genre = genres.find((g) => g.id === id);
+                  return (
+                    <span className="genre-tag" key={id}>
+                      {genre ? genre.title : "Unknown"}
+                    </span>
+                  );
+                })}
+            </div>
+            <div className="podcast-meta">
+              <span>
+                <strong>Last updated:</strong>{" "}
+                {podcast.updated
+                  ? new Date(podcast.updated).toLocaleDateString()
+                  : "Unknown"}
+              </span>
+              <span>
+                <strong>Seasons:</strong> {podcast.seasons || 0}
+              </span>
+            </div>
+          </Link>
+        </div>
       ))}
     </div>
   );
