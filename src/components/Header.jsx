@@ -5,7 +5,7 @@ import "./Header.css";
  * Header component displaying the app logo and title
  * @returns {JSX.Element} The header component
  */
-function Header({ onSearchClick }) {
+function Header({ onSearchClick, ThemeToggle }) {
   return (
     <header className="header">
       <div className="header__logo">
@@ -22,7 +22,8 @@ function Header({ onSearchClick }) {
         </svg>
         <h1 className="header__title">Podcast-App</h1>
       </div>
-      <div className="header__actions">
+      <div className="header__actions" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {ThemeToggle && <ThemeToggle />}
         <button className="header__search-btn" aria-label="Search" onClick={onSearchClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

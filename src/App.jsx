@@ -4,6 +4,8 @@ import HomePage from "./HomePage";
 import ShowDetailPage from "./ShowDetailPage";
 import FavouritesPage from "./FavouritesPage";
 import { FavouriteButton } from "./components/FavouriteButton";
+import Header from "./components/Header";
+import { AudioPlayerProvider, useAudioPlayer } from "./contexts/AudioPlayerContext";
 
 // Theme context and provider
 const ThemeContext = React.createContext();
@@ -34,16 +36,13 @@ function ThemeToggle() {
     <button
       onClick={toggleTheme}
       style={{
-        position: 'fixed',
-        top: 16,
-        right: 16,
-        zIndex: 2000,
         background: 'none',
         border: 'none',
         fontSize: 28,
         cursor: 'pointer',
         color: theme === 'dark' ? '#ffd700' : '#222',
-        transition: 'color 0.2s'
+        transition: 'color 0.2s',
+        marginRight: 8
       }}
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -57,10 +56,9 @@ function ThemeToggle() {
 
 // Simple global audio player component
 function AudioPlayer() {
-  const [playing, setPlaying] = React.useState(false);
+  const { audioSrc, audioTitle, playing, setPlaying, audioRef } = useAudioPlayer();
   const [currentTime, setCurrentTime] = React.useState(0);
   const [duration, setDuration] = React.useState(0);
-  const audioRef = React.useRef(null);
 
   // Confirmation prompt on reload during playback
   React.useEffect(() => {
@@ -73,6 +71,16 @@ function AudioPlayer() {
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [playing]);
+
+  React.useEffect(() => {
+    if (audioRef.current) {
+      if (playing) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [playing, audioRef, audioSrc]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -95,10 +103,6 @@ function AudioPlayer() {
     audioRef.current.currentTime = time;
     setCurrentTime(time);
   };
-
-  // Example placeholder audio and episode ID
-  const audioSrc = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-  const episodeId = "example-episode-1";
 
   // Format time in mm:ss
   const formatTime = (t) => {
@@ -123,16 +127,15 @@ function AudioPlayer() {
       <button onClick={togglePlay} style={{marginRight: 16}}>
         {playing ? 'Pause' : 'Play'}
       </button>
-      <FavouriteButton episodeId={episodeId} />
       <audio
         ref={audioRef}
-        src={audioSrc}
+        src={audioSrc || undefined}
         onEnded={() => setPlaying(false)}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         style={{display: 'none'}}
       />
-      <span style={{marginRight: 16}}>Now Playing: Example Audio</span>
+      <span style={{marginRight: 16}}>Now Playing: {audioTitle || 'No audio selected'}</span>
       <span style={{marginRight: 8}}>{formatTime(currentTime)}</span>
       <input
         type="range"
@@ -151,19 +154,17 @@ function AudioPlayer() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <ThemeToggle />
-      <nav style={{ position: 'fixed', top: 16, left: 16, zIndex: 2000 }}>
-        <a href="/" style={{ marginRight: 16, color: '#222', textDecoration: 'none', fontWeight: 600 }}>Home</a>
-        <a href="/favourites" style={{ color: '#222', textDecoration: 'none', fontWeight: 600 }}>Favourites</a>
-      </nav>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/show/:id" element={<ShowDetailPage />} />
-        <Route path="/favourites" element={<FavouritesPage />} />
-      </Routes>
-      <AudioPlayer />
-    </ThemeProvider>
+    <AudioPlayerProvider>
+      <ThemeProvider>
+        <Header onSearchClick={() => {}} ThemeToggle={ThemeToggle} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/show/:id" element={<ShowDetailPage />} />
+          <Route path="/favourites" element={<FavouritesPage />} />
+        </Routes>
+        <AudioPlayer />
+      </ThemeProvider>
+    </AudioPlayerProvider>
   );
 }
 

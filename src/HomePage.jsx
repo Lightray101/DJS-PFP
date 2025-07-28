@@ -167,7 +167,6 @@ function HomePage() {
   // Main render: search, filters, podcast grid, and pagination
   return (
     <div className="app">
-      <Header onSearchClick={() => setShowSearch(true)} />
       <RecommendedCarousel shows={recommended} />
       {showSearch && (
         <div style={{

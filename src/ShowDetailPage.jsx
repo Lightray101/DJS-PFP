@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
+import { useAudioPlayer } from "./contexts/AudioPlayerContext";
 
 const GENRE_MAP = {
   1: "Personal Growth",
@@ -26,6 +27,7 @@ function formatDate(dateString) {
 function ShowDetailPage() {
   const { id } = useParams();
   const location = useLocation();
+  const { playAudio } = useAudioPlayer();
   const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -117,25 +119,35 @@ function ShowDetailPage() {
 
       <div className="episode-list">
         {selectedSeason.episodes && selectedSeason.episodes.length > 0 ? (
-          selectedSeason.episodes.map((ep, idx) => (
-            <div className="episode-card" key={ep.id || idx}>
-              <div className="episode-thumb">
-                <img src={ep.image ? ep.image : show.image} alt={ep.title} />
-              </div>
-              <div className="episode-info">
-                <strong>
-                  Episode {idx + 1}: {ep.title}
-                </strong>
-                <div className="episode-meta">
-                  <span>{ep.duration || ""}</span>
-                  <span>
-                    {ep.releaseDate ? formatDate(ep.releaseDate) : ""}
-                  </span>
+          selectedSeason.episodes.map((ep, idx) => {
+            console.log('EPISODE OBJECT:', ep);
+            return (
+              <div
+                className="episode-card"
+                key={ep.id || idx}
+                style={{ cursor: ep.file ? 'pointer' : 'default' }}
+                onClick={() => {
+                  if (ep.file) playAudio(ep.file, ep.title);
+                }}
+              >
+                <div className="episode-thumb">
+                  <img src={ep.image ? ep.image : show.image} alt={ep.title} />
                 </div>
-                <p>{ep.description}</p>
+                <div className="episode-info">
+                  <strong>
+                    Episode {idx + 1}: {ep.title}
+                  </strong>
+                  <div className="episode-meta">
+                    <span>{ep.duration || ""}</span>
+                    <span>
+                      {ep.releaseDate ? formatDate(ep.releaseDate) : ""}
+                    </span>
+                  </div>
+                  <p>{ep.description}</p>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No episodes available for this season.</p>
         )}
